@@ -6,11 +6,14 @@ import StarterKit from "@tiptap/starter-kit"
 import {Editor, EditorContent} from "@tiptap/react"
 import PasswordDialog from "@/components/passwordDialog";
 import {ViewDocumentResponse} from "@/app/api/documents/view/[id]/route";
+import {useState} from "react";
 
 export default function DocumentViewer(params: { id: string, docViewResponse: ViewDocumentResponse }) {
-    const [doc, setDoc] = useLocalStorage<Paage | null>(`paage-${params.id}`, params.docViewResponse.doc)
-
     // TODO: If Paage has already been unlocked and is present in local storage, no need to unlock again.
+
+    const [doc, setDoc] = useLocalStorage<Paage | null>(`paage-${params.id}`, params.docViewResponse.doc)
+    const [isLocked, setIsLocked] = useState<boolean>(params.docViewResponse.requiresPassword && !doc)
+
     async function attemptUnlock(password: string) {
         console.log(encodeURIComponent(
             password
@@ -33,17 +36,30 @@ export default function DocumentViewer(params: { id: string, docViewResponse: Vi
         if (data.doc) {
             console.log("Document unlocked:", data.doc)
             setDoc(data.doc)
+            setIsLocked(false)
         }
         else {
             console.log("Incorrect password!")
-            setDoc({ id: "system", content: "This Paage is locked away 🔒" })
         }
     }
 
     return (
         <>
+            {isLocked && <div
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "rgba(0, 0, 0, 0.0)",
+                    backdropFilter: "blur(8px)",
+                    zIndex: 10,
+                }}
+            />}
+
             <PasswordDialog
-                isOpen={params.docViewResponse.requiresPassword}
+                isOpen={isLocked}
                 onSubmitAction={(password) => attemptUnlock(password)}
             />
 
