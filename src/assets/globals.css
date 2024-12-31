@@ -1,0 +1,74 @@
+@import './colors.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: var(--util-100);
+    --foreground: var(--util-950);
+
+    --muted: var(--util-300);
+    --muted-foreground: var(--util-600);
+
+    --popover: var(--util-200);
+    --popover-foreground: var(--util-50);
+
+    --border: var(--util-400);
+    --input: var(--util-400);
+
+    --card: var(--util-100);
+    --card-foreground: var(--util-950);
+
+    --primary: var(--primary-600);
+    --primary-foreground: var(--util-50);
+
+    --secondary: var(--secondary-500);
+    --secondary-foreground: var(--util-50);
+
+    --accent: var(--accent-500);
+    --accent-foreground: var(--util-50);
+
+    --danger-foreground: var(--util-50);
+    --success-foreground: var(--util-50);
+    --warning-foreground: var(--util-50);
+    --information-foreground: var(--util-50);
+
+    --ring: var(--primary-100);
+
+    --radius: 8px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Custom classes */
+  .page-pos {
+    @apply mx-auto md:max-w-7xl;
+  }
+
+  /* Content typography */
+  article h1 {
+    @apply text-3xl font-semibold md:text-5xl my-2 md:my-4;
+  }
+  article h2,
+  article h3 {
+    @apply text-xl font-semibold md:text-3xl my-1 md:my-2;
+  }
+  article h4 {
+    @apply text-lg font-semibold;
+  }
+  article h5 {
+    @apply text-lg;
+  }
+  article li {
+    @apply my-4 ml-12 list-disc;
+  }
+}
